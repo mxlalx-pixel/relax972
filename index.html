@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>慢旅日本 | 日本包車自由行</title>
+    
+    <!-- Google Fonts: Noto Serif TC for Vintage Artsy feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            100: '#FDFBF7',
+                            200: '#F5F0E8',
+                            300: '#E6DCC8',
+                        },
+                        burgundy: {
+                            800: '#5C2018',
+                            900: '#3A140F',
+                        },
+                        linen: '#8C7A6B',
+                        ink: '#2C2A29'
+                    },
+                    fontFamily: {
+                        serif:['"Noto Serif TC"', 'serif'],
+                    },
+                    boxShadow: {
+                        'vintage': '0 20px 40px -15px rgba(92, 32, 24, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- GSAP, Anime.js, Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* Base Styling */
+        body {
+            background-color: #F5F0E8;
+            color: #2C2A29;
+            overflow-x: hidden;
+        }
+
+        /* Film Grain Noise Effect */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.06;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            mix-blend-mode: multiply;
+        }
+
+        /* Vintage Image Filters & Transitions */
+        .img-vintage {
+            filter: sepia(0.3) contrast(1.1) brightness(0.9) saturate(0.85);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .vintage-container:hover .img-vintage {
+            filter: sepia(0) contrast(1.05) brightness(1) saturate(1.1);
+            transform: scale(1.03);
+        }
+
+        /* Glassmorphism for Navbar */
+        .glass-nav {
+            background: rgba(245, 240, 232, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(140, 122, 107, 0.2);
+        }
+
+        /* Custom Selection */
+        ::selection {
+            background-color: #5C2018;
+            color: #F5F0E8;
+        }
+
+        /* Text vertical writing for aesthetics */
+        .text-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* Smooth reveal clip-path */
+        .reveal-clip {
+            clip-path: inset(100% 0 0 0);
+        }
+    </style>
+</head>
+<body class="font-serif antialiased">
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-widest text-burgundy-800 flex items-center gap-2 cursor-pointer">
+                <iconify-icon icon="mingcute:leaf-3-line" class="text-3xl"></iconify-icon>
+                慢旅日本
+            </div>
+            <div class="hidden md:flex items-center space-x-10 text-ink text-sm tracking-[0.2em]">
+                <a href="#philosophy" class="hover:text-burgundy-800 transition-colors">慢旅哲學</a>
+                <a href="#services" class="hover:text-burgundy-800 transition-colors">專屬服務</a>
+                <a href="#destinations" class="hover:text-burgundy-800 transition-colors">沿途風景</a>
+            </div>
+            <div>
+                <a href="#contact" class="inline-block border border-burgundy-800 text-burgundy-800 px-6 py-2.5 text-sm tracking-widest hover:bg-burgundy-800 hover:text-cream-200 transition-all duration-300">
+                    立即咨詢
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+        <!-- SVG Gradient / Pattern Base -->
+        <div class="absolute inset-0 z-0 bg-cream-200"></div>
+        
+        <!-- Hero Background Image -->
+        <div class="absolute inset-0 z-10 vintage-container w-full h-full">
+            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070&auto=format&fit=crop" 
+                 alt="Kyoto Vintage Street" 
+                 class="w-full h-full object-cover img-vintage opacity-90"
+                 id="hero-img">
+            <!-- Warm Paper Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-cream-200 via-cream-200/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-burgundy-900/10 mix-blend-overlay"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-20 text-center px-6 mt-20 flex flex-col items-center">
+            <div class="overflow-hidden mb-6">
+                <h1 class="hero-text text-5xl md:text-7xl lg:text-8xl font-medium text-burgundy-900 tracking-[0.15em] leading-tight">
+                    日本包車自由行
+                </h1>
+            </div>
+            <div class="overflow-hidden mb-12">
+                <p class="hero-subtext text-lg md:text-xl text-ink tracking-[0.3em] font-light flex flex-wrap justify-center gap-4">
+                    <span>輕鬆慢旅</span>
+                    <span class="text-linen">｜</span>
+                    <span>行程彈性</span>
+                    <span class="text-linen">｜</span>
+                    <span>中文司機</span>
+                    <span class="text-linen">｜</span>
+                    <span>專業對接好安心</span>
+                </p>
+            </div>
+            <a href="#contact" class="hero-btn group relative overflow-hidden bg-burgundy-800 text-cream-200 px-10 py-4 tracking-[0.2em] text-sm flex items-center gap-3 hover:shadow-vintage transition-all duration-500">
+                <span class="relative z-10">立即咨詢</span>
+                <iconify-icon icon="ph:arrow-right-light" class="relative z-10 text-lg group-hover:translate-x-1 transition-transform"></iconify-icon>
+                <div class="absolute inset-0 bg-burgundy-900 transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out z-0"></div>
+            </a>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 hero-scroll">
+            <span class="text-xs tracking-widest text-linen text-vertical">SCROLL</span>
+            <div class="w-[1px] h-12 bg-linen/50 overflow-hidden">
+                <div class="w-full h-full bg-burgundy-800 transform -translate-y-full scroll-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Asymmetric Story Section -->
+    <section id="philosophy" class="py-32 bg-cream-200 relative">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                
+                <!-- Left Asymmetric Image -->
+                <div class="lg:col-span-7 vintage-container overflow-hidden group gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=2070&auto=format&fit=crop" 
+                         alt="Japan serene nature" 
+                         class="w-full h-[80vh] object-cover img-vintage reveal-clip img-anim">
+                </div>
+
+                <!-- Right Text Content -->
+                <div class="lg:col-span-5 flex flex-col justify-center gs-reveal">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-[1px] bg-linen"></div>
+                        <span class="text-linen tracking-widest text-sm uppercase">Philosophy</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl text-burgundy-900 mb-8 leading-snug tracking-wider">
+                        不趕路的旅行，<br>才是真正的奢華。
+                    </h2>
+                    <p class="text-ink/80 leading-relaxed tracking-wider mb-10 text-justify">
+                        我們相信，旅行不該是走馬看花的打卡。為您提供專屬的包車服務，讓您能隨心所欲地停留在每一個心動的瞬間。無論是京都古老的石板小路，還是富士山下寧靜的村落，都有我們為您妥善安排。
+                    </p>
+                    <div class="vintage-container overflow-hidden w-2/3 ml-auto">
+                        <!-- 已更新為確保顯示的日本茶圖片 -->
+                        <img src="https://images.unsplash.com/photo-1596414603912-78d10ed88d40?q=80&w=1000&auto=format&fit=crop" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1526318896980-cf78c088247c?q=80&w=1000&auto=format&fit=crop';"
+                             alt="Japanese Tea" 
+                             class="w-full h-64 object-cover img-vintage reveal-clip img-anim">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Section (3 Cards) -->
+    <section id="services" class="py-32 bg-cream-100 relative border-y border-linen/20">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-24 gs-reveal">
+                <span class="text-linen tracking-widest text-sm uppercase block mb-4">Core Values</span>
+                <h2 class="text-3xl md:text-4xl text-burgundy-900 tracking-wider">為您專屬打造的安心旅程</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-8">
+                
+                <!-- Card 1: 行程彈性 (一家人開心出遊) -->
+                <div class="group relative bg-cream-200 p-8 shadow-vintage hover:-translate-y-2 transition-transform duration-500 gs-reveal stagger-card">
+                    <div class="w-16 h-16 rounded-full border border-burgundy-800/30 flex items-center justify-center mb-8 bg-cream-100 group-hover:bg-burgundy-800 group-hover:text-cream-200 transition-colors duration-500 text-burgundy-800">
+                        <iconify-icon icon="ph:map-trifold-light" class="text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-2xl text-burgundy-900 mb-4 tracking-widest">行程彈性</h3>
+                    <p class="text-ink/70 leading-relaxed tracking-wider mb-8">
+                        拋開制式化的行程表。隨時根據您的心情與天氣，與司機討論調整路線，實現真正的自由行。
+                    </p>
+                    <div class="vintage-container overflow-hidden h-48 w-full mt-auto">
+                        <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1000&auto=format&fit=crop" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1476610182048-c71d44162b4c?q=80&w=1000&auto=format&fit=crop';"
+                             alt="Happy Family Travel" class="w-full h-full object-cover img-vintage">
+                    </div>
+                </div>
+
+                <!-- Card 2: 中文司機 (司機在豪華車旁接待) -->
+                <div class="group relative bg-cream-200 p-8 shadow-vintage hover:-translate-y-2 transition-transform duration-500 gs-reveal stagger-card md:mt-12">
+                    <div class="w-16 h-16 rounded-full border border-burgundy-800/30 flex items-center justify-center mb-8 bg-cream-100 group-hover:bg-burgundy-800 group-hover:text-cream-200 transition-colors duration-500 text-burgundy-800">
+                        <iconify-icon icon="ph:steering-wheel-light" class="text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-2xl text-burgundy-900 mb-4 tracking-widest">中文司機</h3>
+                    <p class="text-ink/70 leading-relaxed tracking-wider mb-8">
+                        無語言障礙的貼心陪伴。我們的司機熟知當地文化與隱藏景點，為您提供最地道的深度導覽。
+                    </p>
+                    <div class="vintage-container overflow-hidden h-48 w-full mt-auto">
+                        <img src="https://images.unsplash.com/photo-1631024724206-6dc0f41dc738?q=80&w=1000&auto=format&fit=crop" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=1000&auto=format&fit=crop';"
+                             alt="Driver receiving clients next to luxury car" class="w-full h-full object-cover img-vintage" style="object-position: center 30%;">
+                    </div>
+                </div>
+
+                <!-- Card 3: 專業對接 (專業客服通話中) -->
+                <div class="group relative bg-cream-200 p-8 shadow-vintage hover:-translate-y-2 transition-transform duration-500 gs-reveal stagger-card md:mt-24">
+                    <div class="w-16 h-16 rounded-full border border-burgundy-800/30 flex items-center justify-center mb-8 bg-cream-100 group-hover:bg-burgundy-800 group-hover:text-cream-200 transition-colors duration-500 text-burgundy-800">
+                        <iconify-icon icon="ph:shield-check-light" class="text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-2xl text-burgundy-900 mb-4 tracking-widest">專業對接</h3>
+                    <p class="text-ink/70 leading-relaxed tracking-wider mb-8">
+                        從行前規劃到旅途中的突發狀況，專屬客服全程在線為您守護，讓您盡情享受旅行的安心與美好。
+                    </p>
+                    <div class="vintage-container overflow-hidden h-48 w-full mt-auto">
+                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1000&auto=format&fit=crop" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1000&auto=format&fit=crop';"
+                             alt="Professional Customer Service Phone Call" class="w-full h-full object-cover img-vintage">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section id="contact" class="py-32 relative overflow-hidden bg-cream-300">
+        <!-- Background Image with Heavy Filter -->
+        <div class="absolute inset-0 z-0 vintage-container">
+            <img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?q=80&w=2000&auto=format&fit=crop" 
+                 alt="Mount Fuji Sunset" 
+                 class="w-full h-full object-cover img-vintage opacity-40 mix-blend-multiply">
+            <div class="absolute inset-0 bg-gradient-to-b from-cream-100/50 to-cream-300/80"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center gs-reveal">
+            <h2 class="text-5xl md:text-6xl text-burgundy-900 mb-8 leading-tight tracking-widest">
+                將時光留給風景<br>將行程交給我們
+            </h2>
+            <p class="text-ink/80 text-lg mb-12 tracking-widest font-light">
+                讓每一次出發，都成為一生的珍藏。
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a href="#" class="bg-burgundy-800 text-cream-200 px-12 py-5 tracking-[0.2em] text-lg hover:bg-burgundy-900 transition-colors duration-300 shadow-xl w-full sm:w-auto">
+                    立即咨詢
+                </a>
+                <a href="#" class="border border-burgundy-800 text-burgundy-900 bg-cream-200/50 backdrop-blur-sm px-12 py-5 tracking-[0.2em] text-lg hover:bg-cream-200 transition-colors duration-300 w-full sm:w-auto">
+                    查看熱門路線
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-burgundy-900 text-cream-200 py-12 text-sm tracking-wider">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2 text-xl font-medium tracking-widest">
+                <iconify-icon icon="mingcute:leaf-3-line"></iconify-icon>
+                慢旅日本
+            </div>
+            <div class="flex gap-8 opacity-70">
+                <a href="#" class="hover:opacity-100 transition-opacity">服務條款</a>
+                <a href="#" class="hover:opacity-100 transition-opacity">隱私政策</a>
+                <a href="#" class="hover:opacity-100 transition-opacity">聯絡我們</a>
+            </div>
+            <div class="opacity-50">
+                &copy; 2026 Slow Travel Japan. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Wait for DOM
+        document.addEventListener("DOMContentLoaded", (event) => {
+            
+            // Navbar Scroll Effect (Glassmorphism)
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('glass-nav', 'py-4');
+                    navbar.classList.remove('py-6');
+                } else {
+                    navbar.classList.remove('glass-nav', 'py-4');
+                    navbar.classList.add('py-6');
+                }
+            });
+
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Animation
+            const heroTl = gsap.timeline();
+            
+            heroTl.fromTo('.hero-text', 
+                { y: 100, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.5, ease: "power4.out", delay: 0.2 }
+            )
+            .fromTo('.hero-subtext span', 
+                { y: 20, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }, 
+                "-=1"
+            )
+            .fromTo('.hero-btn', 
+                { y: 30, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, 
+                "-=0.8"
+            );
+
+            // Scroll Line Looping Animation
+            gsap.to('.scroll-line', {
+                y: '100%',
+                duration: 1.5,
+                repeat: -1,
+                ease: "power2.inOut"
+            });
+
+            // Parallax Effect for Hero Image
+            gsap.to('#hero-img', {
+                yPercent: 15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Reveal Elements on Scroll
+            const revealElements = document.querySelectorAll('.gs-reveal');
+            revealElements.forEach((el) => {
+                gsap.fromTo(el, 
+                    { y: 50, opacity: 0 },
+                    { 
+                        y: 0, 
+                        opacity: 1, 
+                        duration: 1.2, 
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Image Clip Path Animation for Artsy feel
+            const imgAnims = document.querySelectorAll('.img-anim');
+            imgAnims.forEach((img) => {
+                gsap.to(img, {
+                    clipPath: "inset(0% 0 0 0)",
+                    duration: 1.5,
+                    ease: "power4.inOut",
+                    scrollTrigger: {
+                        trigger: img,
+                        start: "top 85%",
+                    }
+                });
+            });
+
+            // Stagger Cards
+            gsap.fromTo('.stagger-card',
+                { y: 50, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: "#services",
+                        start: "top 70%",
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+</html>
